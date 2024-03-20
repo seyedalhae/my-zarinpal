@@ -1,0 +1,52 @@
+{
+	"name": "zarinpal",
+	"version": "0.0.1",
+	"description": "Zarinpal API client for JS/TS/ESM/Node.js",
+	"homepage": "https://github.com/seyedalhae/zarinpal",
+	"keywords": [
+		"zarinpal",
+		"zarinpal-api",
+		"checkout",
+		"pay",
+		"api"
+	],
+	"type": "module",
+	"repository": {
+		"url": "https://github.com/seyedalhae/zarinpal.git",
+		"type": "git"
+	},
+	"author": {
+		"name": "Alireza Haeri",
+		"email": "seyedalhae@gmail.com",
+		"url": "https://github.com/seyedalhae/zarinpal"
+	},
+	"bugs": "https://github.com/seyedalhae/zarinpal",
+	"license": "MIT",
+	"source": "./src/zarinpal.ts",
+	"main": "./dist/zarinpal.cjs",
+	"module": "./dist/zarinpal.cjs",
+	"types": "./dist/zarinpal.d.ts",
+	"typings": "./dist/zarinpal.d.ts",
+	"umd:main": "./dist/zarinpal.umd.js",
+	"unpkg": "./dist/zarinpal.umd.js",
+	"exports": {
+		".": {
+			"require": "./dist/zarinpal.cjs",
+			"default": "./dist/zarinpal.modern.js"
+		},
+		"./ts": "./src/zarinpal.ts",
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"src",
+		"dist"
+	],
+	"scripts": {
+		"build": "microbundle build --raw true --generateType -f modern,esm,cjs,umd",
+		"dev": "microbundle watch -f modern,esm,cjs,umd"
+	},
+	"devDependencies": {
+		"microbundle": "^0.15.1",
+		"typescript": "^5.3.3"
+	}
+}
