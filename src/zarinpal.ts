@@ -1,13 +1,19 @@
 /**
  * Interface representing data required for a payment transaction.
  */
-interface IData {
-	MerchantID?: string; // Unique identifier for the merchant
+interface IPayData {
+	MerchantID: string; // Unique identifier for the merchant
 	Amount: string; // Amount of the transaction
 	CallbackURL: string; // URL to redirect users after payment
 	Description: string; // Description of the transaction
 	Email: string; // Email address of the user
 	Mobile: string; // Mobile number of the user
+}
+
+interface IVerifyData {
+	merchant_id: string; // Unique identifier for the merchant
+	amount: string; // Amount of the transaction
+	authority: string; // Authority
 }
 
 /**
@@ -39,16 +45,14 @@ export class Zarinpal {
 			this.token = token;
 		} else {
 			console.error(
-				"The MerchantID must be " +
-					this.merchantIDLength +
-					" Characters."
+				"The MerchantID must be " + this.merchantIDLength + " Characters."
 			);
 		}
 		this.token = token;
 		this.isSandBox = isSandBox || false;
 	}
 
-	async pay(data: IData): Promise<any> {
+	async pay(data: IPayData): Promise<any> {
 		let url: string = "";
 		if (this.isSandBox) {
 			url = `${this.apiSandBoxUrl}${this.zarinpalAPISuffix.PR}`;
@@ -64,6 +68,7 @@ export class Zarinpal {
 			Email: data?.Email,
 			Mobile: data?.Mobile,
 		};
+
 		try {
 			// Make HTTP request
 			const response = await fetch(url, {
@@ -91,6 +96,65 @@ export class Zarinpal {
 		} catch (error) {
 			console.error("Error:", error);
 			return { status: 500, authority: false, url: false };
+		}
+	}
+
+	async verify(data: IVerifyData): Promise<any> {
+		let url: string = "https://api.zarinpal.com/pg/v4/payment/verify.json";
+
+		const params = {
+			merchant_id: data.merchant_id,
+			amount: data.amount,
+			authority: data.authority,
+		};
+
+		try {
+			// Make HTTP request
+			const response = await fetch(url, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				method: "POST",
+				body: JSON.stringify(params),
+			});
+
+			console.log("Response Status:", response.status);
+			const responseBody = await response.json();
+			console.log("Response Body:", responseBody);
+
+			if (response.status == 200) {
+				const {
+					wages,
+					code,
+					message,
+					card_hash,
+					card_pan,
+					ref_id,
+					fee_type,
+					fee,
+					shaparak_fee,
+					order_id,
+				} = responseBody;
+
+				return {
+					wages,
+					code,
+					message,
+					card_hash,
+					card_pan,
+					ref_id,
+					fee_type,
+					fee,
+					shaparak_fee,
+					order_id,
+				};
+			} else {
+				return { status: 500 };
+			}
+		} catch (error) {
+			console.error("Error:", error);
+			return { status: 500 };
 		}
 	}
 
