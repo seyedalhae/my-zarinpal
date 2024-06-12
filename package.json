@@ -1,6 +1,6 @@
 {
 	"name": "my-zarinpal",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Zarinpal API client for JS/TS/ESM/Node.js",
 	"homepage": "https://github.com/seyedalhae/my-zarinpal",
 	"keywords": [
