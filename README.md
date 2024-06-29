@@ -40,6 +40,34 @@ zarinpal.pay(params: object): Promise<object>;
 // Creates a payment request.
 ```
 
+```typescript
+interface IPayParams {
+    amount: string,
+	currency: CurrencyType,
+	metadata: IMetadata,
+	callback_url: string,
+	description: string,
+}
+
+type CurrencyType = "IRT" | "IRR";
+
+interface IMetadata {
+	mobile: string,
+	email: string,
+}
+
+const params: IPayParams = {
+	amount: "PAYABLE_AMOUNT,
+	currency: "CURRENCY_METHOD",
+	metadata: {
+		mobile: "MOBILE_NUMBER",
+		email: "EMAIL_ADDRESS",
+	},
+	callback_url: `CALLBACL_URL`,
+	description: "PAYMENT_DESCRIPTION",
+};
+```
+
 params (object): The payment parameters.
 amount (string): The amount of the payment.
 currency (string): The currency of the payment (e.g., "IRT").
